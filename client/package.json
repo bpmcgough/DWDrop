@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "cryptiles": "^4.1.2",
     "jquery": "^3.3.1",
     "react": "^16.1.0",
     "react-dom": "^16.1.0",
