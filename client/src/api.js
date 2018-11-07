@@ -1,7 +1,7 @@
 import request from 'superagent';
 let user_id;
-let targetPlaylistObject;
-let discoverWeeklySongs;
+let targetPlaylistObject = {};
+let discoverWeeklySongs = {"uris": []};
 
 //////////////////////////////////////////////
 ///////////////////utils//////////////////////
@@ -14,9 +14,6 @@ const createPlaylist = (token, name, userId) => {
       request.post(`https://api.spotify.com/v1/users/${userId}/playlists?limit=50`)
         .set('Authorization', `Bearer ${token}`)
         .send(JSON.stringify({name}))
-        .then(res=>{
-          console.log('success:', res.body)
-        });
     })
     .catch(e=>console.error(e));
 }
@@ -24,7 +21,7 @@ const createPlaylist = (token, name, userId) => {
 const addSongsToPlaylist = (token, songArray, playlistId, userId) => {
   return request.post(`https://api.spotify.com/v1/users/${userId}/playlists/${playlistId}/tracks`)
     .set('Authorization', `Bearer ${token}`)
-    .send({uris:songArray})
+    .send(songArray)
     .catch(e=>console.error(e));
 }
 
@@ -32,19 +29,21 @@ const getTracksFromPlaylist = (token, playlistId, handler) => {
   return request.get(`https://api.spotify.com/v1/users/spotify/playlists/${playlistId}/tracks`)
     .set('Authorization', `Bearer ${token}`)
     .then(res=>{
-      // add
+      res.body.items.forEach(item => {
+        discoverWeeklySongs.uris.push(item.track.uri);
+      });
     })
     .catch(e=>console.error(e));
 }
 
-const getPlaylists = (token, handler) => {
-  request.get('https://api.spotify.com/v1/me/playlists')
-    .set('Authorization', `Bearer ${token}`)
-    .then(res=>{
-      handler(res.body.items[0].name)
-    })
-    .catch(e=>console.error(e))
-}
+// const getPlaylists = (token, handler) => {
+//   request.get('https://api.spotify.com/v1/me/playlists')
+//     .set('Authorization', `Bearer ${token}`)
+//     .then(res=>{
+//       handler(res.body.items[0].name)
+//     })
+//     .catch(e=>console.error(e))
+// }
 
 const setUserId = (token) => {
   return request.get('https://api.spotify.com/v1/me')
@@ -91,10 +90,13 @@ const createDWDrop = (token) => {
 const masterDWRun = (token) => {
   createDWDrop(token)
     .then(()=> {
-      getTracksFromPlaylist(token, targetPlaylistObject['discoverWeeklyId']);
+      // takes DW tracks and adds to discoverWeeklySongs
+      return getTracksFromPlaylist(token, targetPlaylistObject['discoverWeeklyId']);
     })
     .then(()=>{
-      // addSongsToPlaylist(token, discoverWeeklySongs)
+      // adds from discoverWeeklySongs to DW drop
+      console.log('before addSongsToPlaylist: ', token, discoverWeeklySongs, targetPlaylistObject.discoverWeeklyDropId, user_id)
+      return addSongsToPlaylist(token, discoverWeeklySongs, targetPlaylistObject.discoverWeeklyDropId, user_id)
     })
     .catch(e=>console.error(e));
 }
@@ -102,20 +104,10 @@ const masterDWRun = (token) => {
 const runProgram = (token) => {
   setUserId(token)
     .then(()=>{
-      console.log('userId: ', user_id)
       masterDWRun(token)
     })
     .catch(e=>console.error(e));
 }
-
-// check if DW drop exists
-  // if it doesn't, create
-  // if it does exist, move on
-// get target playlist ids
-// get target playlist songs
-// create array of songs from DW
-// compare DW song array against DW Drop, removing songs in DW array that are already in DW Drop
-// add songs to DW drop
 
 export const apiFunctions = {
   createDWDrop,

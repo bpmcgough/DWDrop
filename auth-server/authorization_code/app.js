@@ -71,7 +71,7 @@ app.get('/login', function(req, res) {
 });
 
 app.get('/getMyPlaylists', (req, res)=>{
-  
+
   console.log('hello')
   let authOptions = {
     url: `https://api.spotify.com/v1/me/playlists`,
@@ -375,18 +375,7 @@ app.get('/delete_duplicates', (req, res)=>{
   });
 });
 
-app.get('/add_recommended_songs', (req, res)=>{
-  // adds all of the recommended songs to a playlist
-});
-
-app.get('/compare_playlists', (req, res)=>{
-  // let's compare andie's discotheque and flim flam
-  // because i'm petty
-  // how much of andie's discotheque are songs that I added to flim flam?
-})
-
 app.get('/refresh_token', function(req, res) {
-
   // requesting access token from refresh token
   let refresh_token = req.query.refresh_token;
   let authOptions = {

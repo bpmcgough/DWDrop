@@ -18,7 +18,7 @@ class App extends Component {
 
     this.state = {
       loggedIn: token ? true : false,
-      nowPlaying: { name: 'Not Checked', albumArt: '' },
+      nowPlaying: { name: 'Not Checked', albumArt: ''},
       playlistName: 'placeholder name',
       token: token,
     }
@@ -55,16 +55,12 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <a href='http://localhost:8888' > Login to Spotify </a>
-        <div>
-          Now Playing: { this.state.nowPlaying.name }
-        </div>
-        <div>
-          <div>{this.state.playlistName}</div>
-        </div>
+        { !this.state.loggedIn &&
+          <a href='http://localhost:8888' > Login to Spotify </a>
+        }
         { this.state.loggedIn &&
           <button onClick={() => apiFunctions.runProgram(this.state.token)}>
-            Get Playlists
+            Drop that shit
           </button>
         }
       </div>
