@@ -17,8 +17,7 @@ class App extends Component {
 
     this.state = {
       loggedIn: token ? true : false,
-      nowPlaying: { name: 'Not Checked', albumArt: ''},
-      playlistName: 'placeholder name',
+      username: '',
       token: token,
     }
   }
@@ -35,16 +34,11 @@ class App extends Component {
     return hashParams;
   }
 
-  getNowPlaying(){
-    spotifyApi.getMyCurrentPlaybackState()
-      .then((response) => {
-        this.setState({
-          nowPlaying: {
-              name: response.item.name,
-              albumArt: response.item.album.images[0].url
-            }
-        });
-      })
+  getUser(){
+    spotifyApi.getMe()
+    .then((response) => {
+      this.setState({username: response.display_name})
+    })
   }
 
   handlePlaylistGet(playlist){
@@ -52,13 +46,21 @@ class App extends Component {
   }
 
   render() {
+    this.getUser();
+
     return (
       <div className="App">
-          <a href='http://localhost:8888'> Login to Spotify </a>
+        <h1>Discover Weekly Drop</h1>
+        {!this.state.loggedIn &&
+          <a href='http://localhost:8888/login'> Login to Spotify </a>
+        }
         { this.state.loggedIn &&
-          <button onClick={() => apiFunctions.runProgram(this.state.token)}>
-            Run program
-          </button>
+          <div>
+            <h3>Hi {this.state.username}</h3>
+            <button onClick={() => apiFunctions.runProgram(this.state.token)}>
+              Run Program
+            </button>
+          </div>
         }
       </div>
     );
