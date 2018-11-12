@@ -81,7 +81,6 @@ const getTracksFromPlaylist = (token, playlistId, handler) => {
 // }
 
 const setUserId = (token) => {
-  console.log('token: ', token);
   return request.get('https://api.spotify.com/v1/me')
     .set('Authorization', `Bearer ${token}`)
     .then((res)=>{
@@ -108,7 +107,6 @@ const findTargetPlaylists = (token) => {
           targetPlaylistObject['discoverWeeklyDropId'] = playlist.id;
         }
       });
-      console.log('targets: ', targetPlaylistObject);
     })
     .catch(e=>console.error(e))
 }
@@ -150,5 +148,4 @@ export const apiFunctions = {
   setUserId,
   runProgram,
   login,
-  findTargetPlaylists,
 }
