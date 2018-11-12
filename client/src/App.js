@@ -56,7 +56,7 @@ class App extends Component {
       <div className="App">
           <a href='http://localhost:8888'> Login to Spotify </a>
         { this.state.loggedIn &&
-          <button onClick={() => apiFunctions.login(this.state.token)}>
+          <button onClick={() => apiFunctions.findTargetPlaylists(this.state.token)}>
             Login to that shit mf
           </button>
         }
