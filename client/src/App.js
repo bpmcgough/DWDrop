@@ -13,8 +13,6 @@ class App extends Component {
       spotifyApi.setAccessToken(token);
     }
 
-    this.handlePlaylistGet = this.handlePlaylistGet.bind(this);
-
     this.state = {
       loggedIn: token ? true : false,
       username: '',
