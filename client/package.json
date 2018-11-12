@@ -9,7 +9,8 @@
     "react-dom": "^16.1.0",
     "react-scripts": "1.0.17",
     "spotify-web-api-js": "^0.22.1",
-    "superagent": "^4.0.0-beta.5"
+    "superagent": "^4.0.0-beta.5",
+    "querystring": "^0.2.0"
   },
   "scripts": {
     "start": "react-scripts start",

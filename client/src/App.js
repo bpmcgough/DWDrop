@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
 import { apiFunctions } from './api.js'
-
 import SpotifyWebApi from 'spotify-web-api-js';
 const spotifyApi = new SpotifyWebApi();
 
@@ -55,12 +54,10 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        { !this.state.loggedIn &&
-          <a href='http://localhost:8888' > Login to Spotify </a>
-        }
+          <a href='http://localhost:8888'> Login to Spotify </a>
         { this.state.loggedIn &&
-          <button onClick={() => apiFunctions.runProgram(this.state.token)}>
-            Drop that shit
+          <button onClick={() => apiFunctions.login(this.state.token)}>
+            Login to that shit mf
           </button>
         }
       </div>
