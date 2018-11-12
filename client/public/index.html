@@ -19,7 +19,20 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>React App</title>
+    <title>Discover Weekly Drop</title>
+    <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase.js"></script>
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyDIjY4BkzTF6QblYxHrGkji6tN41JXiuVE",
+        authDomain: "dw-dump.firebaseapp.com",
+        databaseURL: "https://dw-dump.firebaseio.com",
+        projectId: "dw-dump",
+        storageBucket: "dw-dump.appspot.com",
+        messagingSenderId: "503835081413"
+      };
+      firebase.initializeApp(config);
+    </script>
   </head>
   <body>
     <noscript>

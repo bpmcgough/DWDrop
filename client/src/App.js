@@ -19,6 +19,7 @@ class App extends Component {
       loggedIn: token ? true : false,
       username: '',
       token: token,
+      userProgramStatus: 'ON',
     }
   }
 
@@ -41,8 +42,8 @@ class App extends Component {
     })
   }
 
-  handlePlaylistGet(playlist){
-    this.setState({playlistName: playlist});
+  toggleProgram(){
+    this.setState({userProgramStatus: !this.state.userProgramStatus})
   }
 
   render() {
@@ -60,6 +61,13 @@ class App extends Component {
             <button onClick={() => apiFunctions.runProgram(this.state.token)}>
               Run Program
             </button>
+            <br/>
+            Program is {this.state.userProgramStatus}
+            <br/>
+            <label className="switch">
+              <input type="checkbox"/>
+              <span className="slider round"></span>
+            </label>
           </div>
         }
       </div>
