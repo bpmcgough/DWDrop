@@ -16,7 +16,7 @@ const $ = require('jquery');
 // const Promise = require('bluebird');
 
 let client_id = '9f8d803e2d394afe80e3415ba058e404'; // Your client id
-let client_secret = '647a5ef49c624217acbab1368e34740f'; // Your secret
+let client_secret = process.env.SPOTIFY_CLIENT_SECRET; // Your secret
 let redirect_uri = 'http://localhost:8888/callback'; // Your redirect uri
 let user_id;
 let targetPlaylistId;

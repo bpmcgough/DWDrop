@@ -1,8 +1,13 @@
 import React, { Component } from 'react';
 import './App.css';
+import firebase from './firebase';
 import { apiFunctions } from './api.js'
 import SpotifyWebApi from 'spotify-web-api-js';
 const spotifyApi = new SpotifyWebApi();
+
+const firestore = firebase.firestore();
+const settings = {timestampsInSnapshots: true};
+firestore.settings(settings);
 
 class App extends Component {
   constructor(){
@@ -17,8 +22,11 @@ class App extends Component {
       loggedIn: token ? true : false,
       username: '',
       token: token,
-      userProgramStatus: 'ON',
+      is_active: false,
+      is_checked: false,
     }
+
+    this.getUser();
   }
 
   getHashParams() {
@@ -33,26 +41,41 @@ class App extends Component {
     return hashParams;
   }
 
-  getUser(){
+  getUser(/*userName*/){
+    let userData;
+    let userName = 'gary1'
+
+    var docRef = firestore.collection('users').doc(userName);
+
+    docRef.get().then(doc=>{
+      if(doc.exists){
+        console.log('doc exists: ', doc.data());
+        this.setState({userProgramStatus: doc.data().status})
+      } else {
+        docRef.set({is_active: 'inactive'})
+        this.setState({userProgramStatus: 'inactive'})
+      }
+      console.log('pye', doc);
+    })
+
     spotifyApi.getMe()
     .then((response) => {
       this.setState({username: response.display_name})
     })
   }
 
-  toggleProgram(){
-    this.setState({userProgramStatus: !this.state.userProgramStatus})
+  toggleProgram(event){
+    let newValue = (this.state.is_checked === "on" || this.state.is_checked === true) ? false : true;
+    this.setState({
+      is_checked: newValue
+    });
   }
 
   render() {
-    this.getUser();
-
     return (
       <div className="App">
         <h1>Discover Weekly Drop</h1>
-        {!this.state.loggedIn &&
-          <a href='http://localhost:8888/login'> Login to Spotify </a>
-        }
+        <a href='http://localhost:8888/login'> Login to Spotify </a>
         { this.state.loggedIn &&
           <div>
             <h3>Hi {this.state.username}</h3>
@@ -63,7 +86,7 @@ class App extends Component {
             Program is {this.state.userProgramStatus}
             <br/>
             <label className="switch">
-              <input type="checkbox"/>
+              <input type="checkbox" checked={this.state.is_checked} onChange={this.toggleProgram.bind(this)}/>
               <span className="slider round"></span>
             </label>
           </div>
