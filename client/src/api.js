@@ -1,46 +1,11 @@
 import request from 'superagent';
-import querystring from 'querystring';
 let user_id;
 let targetPlaylistObject = {};
 let discoverWeeklySongs = {"uris": []};
-let client_id = '9f8d803e2d394afe80e3415ba058e404';
-let client_secret = '647a5ef49c624217acbab1368e34740f';
-let redirect_uri = 'http://localhost:8888/callback';
 
 //////////////////////////////////////////////
 ///////////////////utils//////////////////////
 //////////////////////////////////////////////
-
-
-// here i'm trying to do the auth in an area that i actually understand
-let generateRandomString = function(length) {
-  let text = '';
-  let possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-  for (let i = 0; i < length; i++) {
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
-  }
-  return text;
-};
-
-const login = () => {
-    let state = generateRandomString(16);
-    let scope = 'playlist-modify-private playlist-modify-public';
-
-    request.get('https://accounts.spotify.com/authorize?' +
-      querystring.stringify({
-        response_type: 'code',
-        client_id: client_id,
-        scope: scope,
-        redirect_uri: redirect_uri,
-        state: state
-      })
-    )
-    .set('Access-Control-Allow-Origin', '*')
-    .catch(e=>console.error(e));
-}
-
-// end auth
 
 const createPlaylist = (token, name, userId) => {
   request.get('https://api.spotify.com/v1/me')
@@ -147,5 +112,4 @@ export const apiFunctions = {
   createDWDrop,
   setUserId,
   runProgram,
-  login,
 }
