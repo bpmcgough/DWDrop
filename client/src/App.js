@@ -49,13 +49,11 @@ class App extends Component {
 
     docRef.get().then(doc=>{
       if(doc.exists){
-        console.log('doc exists: ', doc.data());
         this.setState({userProgramStatus: doc.data().status})
       } else {
         docRef.set({is_active: 'inactive'})
         this.setState({userProgramStatus: 'inactive'})
       }
-      console.log('pye', doc);
     })
 
     spotifyApi.getMe()
